@@ -1,5 +1,5 @@
 prog: main.c
-	cc -o prog -Wall main.c
+	$(CC) -std=c23 -o prog -Wall main.c
 
 clean:
 	rm prog
