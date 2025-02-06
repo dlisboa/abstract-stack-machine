@@ -241,6 +241,7 @@ int main() {
   inspectmachine();
 
   puts("== adding program and stack");
+  // this would be part of the code generation phase of a compiler
   // program is: print(1 + 2 + 3 - 1)
   pushinstruction("constpush", (instruction){.type = OP, .u.op = constpush});
   pushinstruction("1", (instruction){.type = NUM, .u.data = 1});
