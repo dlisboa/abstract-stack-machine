@@ -16,8 +16,18 @@ typedef struct instruction {
   } u;
 } instruction;
 
-void inspect_instruction(instruction i, char* buf) {
+void die(const char* s) {
+  puts(s);
+  exit(1);
+}
+
+char* inspect_instruction(instruction i) {
+  char* buf = malloc(sizeof(char) * 100);
+  if (buf == nullptr) {
+    die("out of memory");
+  }
   snprintf(buf, 100, "instruction{type:%d, u.data:%d, u.op:%p}", i.type, i.u.data, i.u.op);
+  return buf;
 }
 
 // program is a sequence of instructions
@@ -35,11 +45,6 @@ typedef union frame { int val; } frame;
 frame stack[NSTACK];
 // stackp points to the next free spot on the stack
 frame *stackp;
-
-void die(const char* s) {
-  puts(s);
-  exit(1);
-}
 
 void inspectstack() {
   puts("\tstack:");
@@ -159,9 +164,7 @@ void pushinstruction(char* s, instruction i) {
   }
   *progp++ = i;
 
-  char buf[100];
-  inspect_instruction(i, buf);
-  printf("\t* exec: pushinstruction: %s\n\t* %s\n", s, buf);
+  printf("\t* exec: pushinstruction: %s\n\t* %s\n", s, inspect_instruction(i));
   inspectprogram();
 }
 
