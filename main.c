@@ -26,7 +26,7 @@ char* inspect_instruction(instruction i) {
   if (buf == nullptr) {
     die("out of memory");
   }
-  snprintf(buf, 100, "instruction{type:%d, u.data:%d, u.op:%p}", i.type, i.u.data, i.u.op);
+  snprintf(buf, 100, "instruction{type:%d, u.data:%d, u.op:%p}", i.type, i.u.data, (void*)i.u.op);
   return buf;
 }
 
@@ -52,11 +52,11 @@ void inspectstack() {
   puts("\t\t-- top --");
   for (int i=NSTACK-1; i >=0; i--) {
     if (stackp == &stack[i]) {
-      printf("%16s%p: |%d|\n", "stackp --> ", &stack[i].val, stack[i].val);
+      printf("%16s%p: |%d|\n", "stackp --> ", (void*)&stack[i].val, stack[i].val);
     } else if (stackp == &stack[i] + 1) {
-      printf("%16s%p: |%d|\n", "top --> ", &stack[i].val, stack[i].val);
+      printf("%16s%p: |%d|\n", "top --> ", (void*)&stack[i].val, stack[i].val);
     } else {
-      printf("\t\t%p: |%d|\n", &stack[i].val, stack[i].val);
+      printf("\t\t%p: |%d|\n", (void*)&stack[i].val, stack[i].val);
     }
   }
   puts("\t\t-- bottom --");
@@ -185,9 +185,9 @@ void printable() {
     char *typ = program[i].type == NUM ? "NUM" : "OP";
     if (program[i].type == OP) {
       funcname = lookup(program[i].u.op);
-      printf("%16s%p: |%p| (%s) [%s]\n", rest, &program[i], program[i].u.op, funcname, typ);
+      printf("%16s%p: |%p| (%s) [%s]\n", rest, (void*)&program[i], (void*)program[i].u.op, funcname, typ);
     } else {
-      printf("%16s%p: |%d| [%s]\n", rest, &program[i], program[i].u.data, typ);
+      printf("%16s%p: |%d| [%s]\n", rest, (void*)&program[i], program[i].u.data, typ);
     }
   }
 }
@@ -201,9 +201,9 @@ void inspectprogram() {
 
 void inspectpointers() {
   puts("\tpointers:");
-  printf("\t\tpc: %p\n", pc);
-  printf("\t\tprogp: %p\n", progp);
-  printf("\t\tprogram: %p\n", program);
+  printf("\t\tpc: %p\n", (void*)pc);
+  printf("\t\tprogp: %p\n", (void*)progp);
+  printf("\t\tprogram: %p\n", (void*)program);
   printf("\t\tstackp: %p\n", (void*)stackp);
 }
 
